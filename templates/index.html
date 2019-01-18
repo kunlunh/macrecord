@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+  <div id="app">
+  
+ <template>
+  <el-table :data="tableData" style="width: 100%">
+    <el-table-column prop="MAC" label="MAC地址" width="180">
+      </el-table-column>
+      <el-table-column prop="POS" label="位置" width="180">
+      </el-table-column>
+      <el-table-column prop="COMMENT" label="备注(使用人主机名)">
+      </el-table-column>
+    <el-table-column label="操作">
+      <template slot-scope="scope">
+        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+        <el-button size="mini" type="warning" @click="update()">提示</el-button>
+		<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+</template>
+
+
+  </div>
+</body>
+  <!-- import Vue before Element -->
+  <script src="static/js/vue.js"></script>
+  <script src="static/js/axios.js"></script>
+  <!-- import JavaScript -->
+  <script src="static/js/index.js"></script>
+  <script src="static/js/main.js"></script>
+</html>
