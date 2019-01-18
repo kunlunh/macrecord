@@ -1,15 +1,18 @@
 # -*- coding:utf-8 -*-
-import json
-
+import json,shutil,os,datetime
 
 def getrecordfromfile() :
 	datalist = []
-
+	timenow = datetime.datetime.strftime(datetime.datetime.now(),'%Y%m%d%H%M%S')
+	bakfilename = "users.other" + timenow
+	shutil.copy("users.other",bakfilename)
+	
 	with open('users.other') as f1:
 		list1 = f1.readlines()
 	for i in range(0, len(list1)):
 		pos1 = list1[i].find('loc:')
 		pos2 = list1[i].find('comment:')
+		#pos3 = len(list1[i])-2
 		pos3 = list1[i].find('\r')
 		datadict = {}
 		datadict['ID'] = i
@@ -20,9 +23,6 @@ def getrecordfromfile() :
 	print(datalist)
 	return(datalist)
 	
-
-	#str_json = json.dumps(datalist)
-	#return(str_json)
 
 def setrecordtofile(allrecord) :
 
@@ -47,15 +47,8 @@ def setrecordtofile(allrecord) :
 		locPOSstart = locPOSfind+6
 		locPOSend = listtmp[i].find('"',locPOSstart)
 		
-		dictlist.append(listtmp[i][locMACstart:locMACend] + '    Cleartext-Password := "' + listtmp[i][locMACstart:locMACend] + '"  #loc:' + listtmp[i][locPOSstart:locPOSend] + ' comment:' +  listtmp[i][locCOMMENTstart:locCOMMENTend])
+		dictlist.append(listtmp[i][locMACstart:locMACend] + '    Cleartext-Password := "' + listtmp[i][locMACstart:locMACend] + '"  #loc:' + listtmp[i][locPOSstart:locPOSend] + ' comment:' +  listtmp[i][locCOMMENTstart:locCOMMENTend] + '\r\n') 
 	
-	outputstr = '\r\n'.join(dictlist)
-	print(outputstr)
-	
-	
-	fp = open('users-new.other', 'w')
-	
-	fp.write(outputstr)
-	fp.close()
 
-	#return(datalist)
+	with open('users.other','w') as wf:
+		wf.writelines(dictlist)

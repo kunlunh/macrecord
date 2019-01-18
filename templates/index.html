@@ -9,7 +9,11 @@
   <div id="app">
   
  <template>
-  <el-table :data="tableData" style="width: 100%">
+ <el-tabs type="border-card">
+  <el-tab-pane>
+    <span slot="label"><i class="el-icon-date"></i> MAC地址</span>
+    
+   <el-table :data="tableData" style="width: 100%">
     <el-table-column prop="MAC" label="MAC地址" width="180">
       </el-table-column>
       <el-table-column prop="POS" label="位置" width="180">
@@ -18,12 +22,70 @@
       </el-table-column>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        <el-button size="mini" type="warning" @click="update()">提示</el-button>
-		<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        <el-button size="mini" @click="msgEdit(scope.$index, scope.row )">编辑</el-button>
+        <el-button size="mini" type="warning" @click="msgNotify(scope.$index, scope.row)">提示</el-button>
+		<el-button size="mini" type="danger" @click="msgDelete(scope.$index, scope.row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
+	
+  </el-tab-pane>
+  <el-tab-pane label="其它1">其它1
+  
+  </el-tab-pane>
+  <el-tab-pane label="其它2">其它2
+  </el-tab-pane>
+  <el-tab-pane label="其它3" >其它3
+   
+  </el-tab-pane>
+   
+</el-tabs>
+<el-button type="success" @click="newrecord()">新建</el-button>
+<el-button type="primary" @click="savetofile()">保存</el-button>
+  
+<el-dialog title="MAC地址编辑" :visible.sync="editFormVisible">
+  <el-form :model="editForm">
+    <el-form-item label="MAC地址" :label-width="formLabelWidth">
+      <el-input v-model="editForm.MAC" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="位置" :label-width="formLabelWidth">
+      <el-select v-model="editForm.POS" placeholder="位置">
+        <el-option label="A1" value="A1"></el-option>
+        <el-option label="A2" value="A2"></el-option>
+		<el-option label="A3" value="A3"></el-option>
+      </el-select>
+    </el-form-item>
+	<el-form-item label="备注(用户、主机名)" :label-width="formLabelWidth">
+      <el-input v-model="editForm.COMMENT" autocomplete="off"></el-input>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="editFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="rowSave(editForm)">确 定</el-button>
+  </div>
+</el-dialog>
+
+<el-dialog title="新建MAC地址" :visible.sync="newFormVisible">
+  <el-form :model="newForm">
+    <el-form-item label="MAC地址" :label-width="formLabelWidth">
+      <el-input v-model="newForm.MAC" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="位置" :label-width="formLabelWidth">
+      <el-select v-model="newForm.POS" placeholder="位置">
+        <el-option label="A1" value="A1"></el-option>
+        <el-option label="A2" value="A2"></el-option>
+		<el-option label="A3" value="A3"></el-option>
+      </el-select>
+    </el-form-item>
+	<el-form-item label="备注(用户、主机名)" :label-width="formLabelWidth">
+      <el-input v-model="newForm.COMMENT" autocomplete="off"></el-input>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="newFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="newSave(newForm)">确 定</el-button>
+  </div>
+</el-dialog>
 </template>
 
 
